@@ -97,6 +97,7 @@ BEGIN_MESSAGE_MAP(CkarchmarjhDlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_MBUTTONDOWN()
 	ON_BN_CLICKED(IDOK, &CkarchmarjhDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDOK2, &CkarchmarjhDlg::OnBnClickedOk2)
 END_MESSAGE_MAP()
 
 
@@ -195,7 +196,7 @@ HCURSOR CkarchmarjhDlg::OnQueryDragIcon()
 }
 
 
-
+//проведение всего исследования
 void CkarchmarjhDlg::OnBnClickedOk()
 {
 	UpdateData(TRUE);
@@ -207,14 +208,23 @@ void CkarchmarjhDlg::OnBnClickedOk()
 	GR2.DrawW();
 	GR3.DrawW();
 	GR4.DrawW();
-
-	//исходный сигнал
-	GR1.DrawOne(curSignal.X, *min_element(curSignal.keys.begin(), curSignal.keys.end()), *max_element(curSignal.keys.begin(), curSignal.keys.end()),
-		*min_element(curSignal.X.begin(), curSignal.X.end()), *max_element(curSignal.X.begin(), curSignal.X.end()), 't', 'A', curSignal.keys);
-	//импульсная характеристика
-	GR2.DrawOne(curSignal.H, *min_element(curSignal.keys.begin(), curSignal.keys.end()), *max_element(curSignal.keys.begin(), curSignal.keys.end()),
-		*min_element(curSignal.H.begin(), curSignal.H.end()), *max_element(curSignal.H.begin(), curSignal.H.end()), 't', 'A', curSignal.keys);
 	
 	curSignal.Solve(msg);
 	
+}
+
+//Демонстрация одной итерации 
+void CkarchmarjhDlg::OnBnClickedOk2()
+{
+	UpdateData(TRUE);
+
+	curSignal.ClearSignal();
+	curSignal.FillSignal(N, fd, alfa, max_noise, A1, A2, A3, D1, D2, D3, t1, t2, t3, &GR1, &GR2, &GR3, &GR4);
+
+	GR1.DrawW();
+	GR2.DrawW();
+	GR3.DrawW();
+	GR4.DrawW();
+
+	curSignal.Show();
 }

@@ -58,4 +58,5 @@ public:
 	afx_msg void OnBnClickedOk();
 	double alfa;
 	double max_noise;
+	afx_msg void OnBnClickedOk2();
 };

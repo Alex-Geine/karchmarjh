@@ -33,7 +33,7 @@ public:
 		XR,
 		Y,
 		H,
-		HN,
+		YN,
 		keys,
 		ErrK,
 		Err1,		
@@ -50,7 +50,7 @@ public:
 		XR.~vector();
 		keys.~vector();
 		XN.~vector();
-		HN.~vector();
+		YN.~vector();
 		Err1.~vector();
 		ErrK.~vector();
 		Err2.~vector();
@@ -86,7 +86,7 @@ public:
 		XR.clear();
 		keys.clear();
 		XN.clear();
-		HN.clear();
+		YN.clear();
 		Err1.clear();
 		ErrK.clear();
 		Err2.clear();		
@@ -105,7 +105,9 @@ public:
 		
 			if (i < N / 2) {
 				if (i == 0)
-					H.push_back(0);
+					//H.push_back(0);
+					//H.push_back(1);
+					H.push_back(abs((sin(alfa / fd) / (alfa / fd))));
 				else
 					H.push_back(abs((sin(alfa * keys[i]) / (alfa * keys[i]))));
 			}
@@ -135,7 +137,8 @@ public:
 	void Solve(MSG msg) {
 		noise = 0;		
 		double noise_step = max_noise / 100;
-
+		
+		//Наложение шума на исходный сигнал
 		while (noise < max_noise) {
 			while (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 			{
@@ -165,21 +168,23 @@ public:
 			noise+=noise_step;
 		}
 
+		//наложение шума на сверку
 		noise = 0;
 		while (noise < max_noise) {		
 			ErrK.push_back(noise);
-			//Шум в импульсной хар-ке
-			Noise(H, &HN);
-			dr2->DrawTwo(H, HN,
+
+			Conv(X, H, &Y);
+			Noise(Y, &YN);
+			Find(YN, H, &XR);
+			Err2.push_back(FindError());
+			
+			//на гарфике с ошибкой
+			dr2->DrawTwo(Y, YN,
 				*min_element(keys.begin(), keys.end()),
 				*max_element(keys.begin(), keys.end()),
-				min(*min_element(H.begin(), H.end()), *min_element(HN.begin(), HN.end())),
-				max(*max_element(H.begin(), H.end()), *max_element(HN.begin(), HN.end())),
+				min(*min_element(Y.begin(), Y.end()), *min_element(YN.begin(), YN.end())),
+				max(*max_element(Y.begin(), Y.end()), *max_element(YN.begin(), YN.end())),
 				't', 'A', keys, keys);
-			Conv(X, HN, &Y);
-			Find(Y, HN, &XR);
-			Err2.push_back(FindError());
-			//на гарфике с ошибкой
 			dr4->DrawOne(Err2, 0, max_noise,
 				*min_element(Err2.begin(), Err2.end()), *max_element(Err2.begin(), Err2.end()), 't', 'A', ErrK);
 			dr1->DrawTwo(XR, X,
@@ -189,7 +194,7 @@ public:
 								max( * max_element(XR.begin(), XR.end()), *max_element(X.begin(), X.end())),
 								't', 'A',  keys, keys);	
 							XR.clear();
-			HN.clear();
+			YN.clear();
 			Y.clear();
 			XR.clear();
 
@@ -328,6 +333,41 @@ public:
 		}
 		n0.~vector();
 		n.~vector();
-	}	
+	}
+
+	void Show() {
+		noise = max_noise;
+
+		//Шум в исходном
+		Noise(X, &XN);
+		Conv(XN, H, &Y);
+		Find(Y, H, &XR);
+		
+		
+		//Графики
+		dr1->DrawTwo(XR, X,
+			*min_element(keys.begin(), keys.end()),
+			*max_element(keys.begin(), keys.end()),
+			min(*min_element(XR.begin(), XR.end()), *min_element(X.begin(), X.end())),
+			max(*max_element(XR.begin(), XR.end()), *max_element(X.begin(), X.end())),
+			't', 'A', keys, keys);
+		dr2->DrawOne(H, 
+			*min_element(keys.begin(), keys.end()),
+			*max_element(keys.begin(), keys.end()),
+			*min_element(H.begin(), H.end()), 
+			*max_element(H.begin(), H.end()), 't', 'A', ErrK);
+		dr3->DrawOne(Y,
+			*min_element(keys.begin(), keys.end()),
+			*max_element(keys.begin(), keys.end()),
+			*min_element(Y.begin(), Y.end()),
+			*max_element(Y.begin(), Y.end()), 't', 'A', ErrK);
+		dr4->DrawTwo(XN, X,
+			*min_element(keys.begin(), keys.end()),
+			*max_element(keys.begin(), keys.end()),
+			min(*min_element(XN.begin(), XN.end()), *min_element(X.begin(), X.end())),
+			max(*max_element(XN.begin(), XN.end()), *max_element(X.begin(), X.end())),
+			't', 'A', keys, keys);
+		
+	}
 
 };
