@@ -59,4 +59,6 @@ public:
 	double alfa;
 	double max_noise;
 	afx_msg void OnBnClickedOk2();
+	BOOL Noise_type;
+	
 };

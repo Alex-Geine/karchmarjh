@@ -73,6 +73,9 @@ public:
 	//функция зашумления
 	void Noise(vector<double> buf, vector<double>* res);
 
-	void Show();
+	//одна итерация с шумом в X
+	void ShowX();
+	//одна итерация с шумом в Y
+	void ShowY();
 
 };

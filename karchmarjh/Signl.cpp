@@ -295,7 +295,7 @@ void Signal::Noise(vector<double> buf, vector<double>* res) {
 	n.~vector();
 }
 
-void Signal::Show() {
+void Signal::ShowX() {
 	noise = max_noise;
 
 	//Шум в исходном
@@ -327,5 +327,37 @@ void Signal::Show() {
 		min(*min_element(XN.begin(), XN.end()), *min_element(X.begin(), X.end())),
 		max(*max_element(XN.begin(), XN.end()), *max_element(X.begin(), X.end())),
 		't', 'A', keys, keys);
+
+}
+
+void Signal::ShowY() {
+	noise = max_noise;
+
+	//Шум в свертке
+	this->Conv(X, H, &Y);
+	this->Noise(Y, &YN);
+	this->Find(YN, H, &XR);
+
+
+	//Графики
+	dr1->DrawTwo(XR, X,
+		*min_element(keys.begin(), keys.end()),
+		*max_element(keys.begin(), keys.end()),
+		min(*min_element(XR.begin(), XR.end()), *min_element(X.begin(), X.end())),
+		max(*max_element(XR.begin(), XR.end()), *max_element(X.begin(), X.end())),
+		't', 'A', keys, keys);
+	dr2->DrawOne(H,
+		*min_element(keys.begin(), keys.end()),
+		*max_element(keys.begin(), keys.end()),
+		*min_element(H.begin(), H.end()),
+		*max_element(H.begin(), H.end()), 't', 'A', ErrK);
+
+	dr3->DrawTwo(Y, YN,
+		*min_element(keys.begin(), keys.end()),
+		*max_element(keys.begin(), keys.end()),
+		min(*min_element(YN.begin(), YN.end()), *min_element(Y.begin(), Y.end())),
+		max(*max_element(YN.begin(), YN.end()), *max_element(Y.begin(), Y.end())),
+		't', 'A', keys, keys);
+	dr4->DrawW();
 
 }

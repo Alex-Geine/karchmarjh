@@ -65,6 +65,7 @@ CkarchmarjhDlg::CkarchmarjhDlg(CWnd* pParent /*=nullptr*/)
 	, N(50)
 	, alfa(0.4)
 	, max_noise(100)
+	, Noise_type(FALSE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -85,6 +86,8 @@ void CkarchmarjhDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT11, N);
 	DDX_Text(pDX, IDC_EDIT12, alfa);
 	DDX_Text(pDX, IDC_EDIT13, max_noise);
+	DDX_Check(pDX, IDC_CHECK1, Noise_type);
+	
 }
 
 BEGIN_MESSAGE_MAP(CkarchmarjhDlg, CDialogEx)
@@ -225,6 +228,9 @@ void CkarchmarjhDlg::OnBnClickedOk2()
 	GR2.DrawW();
 	GR3.DrawW();
 	GR4.DrawW();
-
-	curSignal.Show();
+	if (Noise_type)
+		curSignal.ShowX();
+	else
+		curSignal.ShowY();
+	
 }
