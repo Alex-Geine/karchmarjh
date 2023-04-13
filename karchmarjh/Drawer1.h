@@ -507,10 +507,10 @@ public:
 		for (int i = 0; i < grid_size / 2 + 1; i++)
 		{
 			CString str;
-			str.Format(L"%.3f", data_x_min + i * (data_x_max - data_x_min) / (grid_size / 2));
+			str.Format(L"%.2f", data_x_min + i * (data_x_max - data_x_min) / (grid_size / 2));
 			memDC.TextOutW(actual_left + (double)i * actual_width / (grid_size / 2) - bottom_keys_padding, actual_bottom + bottom_keys_padding / 2, str);
 
-			str.Format(L"%.3f", data_y_min + i * (data_y_max - data_y_min) / (grid_size / 2));
+			str.Format(L"%.0e", data_y_min + i * (data_y_max - data_y_min) / (grid_size / 2));
 			memDC.TextOutW(actual_left - 1.5 * left_keys_padding, actual_bottom - (double)i * actual_height / (grid_size / 2) - bottom_keys_padding, str);
 		}
 

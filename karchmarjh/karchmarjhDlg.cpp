@@ -63,7 +63,7 @@ CkarchmarjhDlg::CkarchmarjhDlg(CWnd* pParent /*=nullptr*/)
 	, t3(40)
 	, fd(1)
 	, N(50)
-	, alfa(100)
+	, alfa(0.4)
 	, max_noise(100)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
