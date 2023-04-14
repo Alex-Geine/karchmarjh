@@ -361,3 +361,8 @@ void Signal::ShowY() {
 	dr4->DrawW();
 
 }
+
+//проверка на пустоту вектора
+bool Signal::IsClear() {
+	return this->H.empty();
+}

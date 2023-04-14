@@ -6,7 +6,7 @@
 using namespace std;
 
 class Signal {
-public:
+private:
 	Drawer
 		*dr1,
 		*dr2,
@@ -38,25 +38,13 @@ public:
 		ErrK,
 		Err1,		
 		Err2;
-			
-	//Деструктор
-	~Signal();
-
-	//заполнение сигнала
-	void FillSignal(double n, double Fd, double alfa, double max_noise, double A1, double A2, double A3,
-		double G1, double G2, double G3, double niu1, double niu2, double niu3, Drawer* dr1, Drawer* dr2, Drawer* dr3, Drawer* dr4);
-	//отчистка сигнала
-	void ClearSignal();
 
 	//создание сигнала
 	void Create();
 
 	//convolution
 	void Conv(vector<double> X, vector<double> H, vector<double>* Y);
-
-	//восстанавливает сигнал при разном уровне шума
-	void Solve(MSG msg);
-
+	
 	//находит квадратичное отклонение
 	double FindError();
 
@@ -68,14 +56,34 @@ public:
 
 	//функция рандома
 	double Random();
+
 	//функция суммы квадратов
 	double Sum(vector<double> mas);
+
 	//функция зашумления
 	void Noise(vector<double> buf, vector<double>* res);
 
+	
+public:
 	//одна итерация с шумом в X
 	void ShowX();
+
 	//одна итерация с шумом в Y
 	void ShowY();
 
+	//восстанавливает сигнал при разном уровне шума
+	void Solve(MSG msg);
+
+	//отчистка сигнала
+	void ClearSignal();
+
+	//Деструктор
+	~Signal();
+
+	//заполнение сигнала
+	void FillSignal(double n, double Fd, double alfa, double max_noise, double A1, double A2, double A3,
+		double G1, double G2, double G3, double niu1, double niu2, double niu3, Drawer* dr1, Drawer* dr2, Drawer* dr3, Drawer* dr4);
+
+	//проверка на пустоту вектора
+	bool IsClear();
 };

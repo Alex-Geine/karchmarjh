@@ -182,7 +182,7 @@ void CkarchmarjhDlg::OnPaint()
 	else
 	{
 		CDialogEx::OnPaint();
-		if (!curSignal.H.empty()) {
+		if (!curSignal.IsClear()) {
 			GR1.ReDraw();
 			GR2.ReDraw();
 			GR3.ReDraw();
